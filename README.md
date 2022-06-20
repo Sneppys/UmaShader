@@ -1,6 +1,8 @@
 # UmaShader
 Simple VRChat-ready Uma Musume styled Unity shader using original game textures
 
+* Note: This is **not complete**. There are some edge cases to work out and some rendering features are still missing or not working properly.
+
 # Example
 ![Example Image](https://user-images.githubusercontent.com/4298508/174686400-4ac30a78-9c23-40c0-975c-cba5626f5a3e.png)
 
