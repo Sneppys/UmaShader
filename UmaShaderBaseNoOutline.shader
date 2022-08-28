@@ -1,13 +1,11 @@
 
-Shader "Uma/Base" {
+Shader "Uma/Base (No Outline)" {
     Properties {
         _MainTex ("Diffuse (_diff)", 2D) = "white" {}
         _ShadTex ("Shaded (_shad_c)", 2D) = "black" {}
         _BaseTex ("Base Map (_base)", 2D) = "white" {}
         _CtrlTex ("Control Map (_ctrl)", 2D) = "white" {}
         _EmiTex ("Emissive (_emi) [optional]", 2D) = "black" {}
-        _OutlineWidth ("Outline Width", float) = 1.0
-        [HideInInspector] _OutlineColor ("Outline Color", Color) = (0.125,0.047,0,0.098)
     }
     SubShader {
         Tags {
@@ -96,61 +94,6 @@ Shader "Uma/Base" {
                 return shadedDiff * specularMult * lerp(float4(1, 1, 1, 1), rimColor, rimLerp) + emi;
             }
 
-            ENDCG
-        }
-
-        Pass {
-            Name "Outline"
-            Tags {
-                "Queue"="Geometry-1"
-            }
-            Cull Front
-
-            CGPROGRAM
-            #pragma vertex vert
-            #pragma fragment frag
-            #include "UnityCG.cginc"
-            #include "Lighting.cginc"
-
-            uniform sampler2D _MainTex;
-            uniform float4 _MainTex_ST;
-            uniform sampler2D _BaseTex;
-            uniform float4 _BaseTex_ST;
-
-            uniform float _OutlineWidth;
-            uniform float4 _OutlineColor;
-
-            struct VertexInput {
-                float4 vertex : POSITION;
-                float3 normal : NORMAL;
-                float2 texcoord0 : TEXCOORD0;
-            };
-            struct VertexOutput {
-                float4 pos : SV_POSITION;
-                float2 uv0 : TEXCOORD0;
-                float4 posWorld : TEXCOORD1;
-            };
-
-            VertexOutput vert (VertexInput v) {
-                VertexOutput o = (VertexOutput)0;
-                float outlineScale = _OutlineWidth * 0.0005;
-                o.pos = UnityObjectToClipPos(float4(v.vertex.xyz + v.normal * outlineScale, 1));
-                o.uv0 = v.texcoord0;
-                o.posWorld = mul(unity_ObjectToWorld, v.vertex);
-                return o;
-            }
-
-            float4 frag(VertexOutput i): COLOR {
-                float4 diff = tex2D(_MainTex, TRANSFORM_TEX(i.uv0, _MainTex));
-                float4 base = tex2D(_BaseTex, TRANSFORM_TEX(i.uv0, _BaseTex));
-
-                float3 lightColor = saturate(max(_LightColor0, max(ShadeSH9(half4(0, 0, 0, 1)).rgb, ShadeSH9(half4(0, -1, 0, 1)).rgb)));
-                float4 outlineColor = lerp(_OutlineColor, diff, 0.2) * fixed4(lightColor, 1);
-
-                clip(base.b - 0.8);
-
-                return fixed4(outlineColor.rgb, 1);
-            }
             ENDCG
         }
 

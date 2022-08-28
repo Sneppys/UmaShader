@@ -21,7 +21,7 @@ Shader "Uma/Cheek" {
                 "Queue" = "AlphaTest-150"
                 "LightMode"="ForwardBase"
             }
-            Cull Off
+            Cull Back
             Blend DstColor Zero, DstColor Zero
             ColorMask RGB 0
             ZWrite Off

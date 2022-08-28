@@ -17,7 +17,7 @@ Shader "Uma/Face" {
             Tags {
                 "LightMode"="ForwardBase"
             }
-            Cull Off
+            Cull Back
 
             CGPROGRAM
             #pragma vertex vert

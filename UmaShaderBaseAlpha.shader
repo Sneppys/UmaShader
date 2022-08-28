@@ -18,7 +18,7 @@ Shader "Uma/Base (Alpha)" {
             Tags {
                 "LightMode"="ForwardBase"
             }
-            Cull Off
+            Cull Back
             Blend SrcAlpha OneMinusSrcAlpha, SrcAlpha OneMinusSrcAlpha
             BlendOp Add, Max
 
